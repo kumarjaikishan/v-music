@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
-import { FaChevronLeft } from "react-icons/fa";
+import { FaChevronLeft,FaBackward } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
-import { FaBackward } from "react-icons/fa";
+// import { FaBackward } from "react-icons/fa";
 import { FaForward } from "react-icons/fa";
 import { FaPause } from "react-icons/fa";
 import { FaPlay } from "react-icons/fa";
@@ -26,7 +26,7 @@ function App() {
       let res = await fetch(`https://v1.nocodeapi.com/kumarjai/spotify/IbIBTKsrfdicMJoB/search?q=${search}&type=track`);
 
       let data = await res.json();
-      console.log(data)
+      // console.log(data)
       settracks(data.tracks.items);
       setspotifysong(data?.tracks?.items[0]);
    
@@ -39,7 +39,7 @@ function App() {
     firste();
   }, [])
   useEffect(() => {
-   console.log(spotifysong)
+  //  console.log(spotifysong)
    audioRef.current.play();
    audioRef.current.volume= 0.2;
   }, [spotifysong])
