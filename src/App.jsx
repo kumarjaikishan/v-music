@@ -1,0 +1,188 @@
+import { useEffect, useState, useRef } from 'react'
+import './App.css'
+import { FaChevronLeft } from "react-icons/fa";
+import { MdMenu } from "react-icons/md";
+import { FaBackward } from "react-icons/fa";
+import { FaForward } from "react-icons/fa";
+import { FaPause } from "react-icons/fa";
+import { FaPlay } from "react-icons/fa";
+import { FaMusic } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
+
+function App() {
+  const [currentsongindex, setcurrentsongindex] = useState(0);
+  const [currentsong, setcurrentsong] = useState({});
+  const [duration, setDuration] = useState("0:00");
+  const [spotifysong,setspotifysong]= useState({})
+  const [search,setsearch]= useState('bulbula')
+  const [currentsongtimne, setcurrentsongtimne] = useState("0:00");
+  const audioRef = useRef(null);
+  const [tracks, settracks] = useState([])
+  
+
+  const firste = async () => {
+    try {
+      // let res = await fetch('https://v1.nocodeapi.com/kumarjai/spotify/IbIBTKsrfdicMJoB/search?q=bulbula&type=track');
+      let res = await fetch(`https://v1.nocodeapi.com/kumarjai/spotify/IbIBTKsrfdicMJoB/search?q=${search}&type=track`);
+
+      let data = await res.json();
+      console.log(data)
+      settracks(data.tracks.items);
+      setspotifysong(data?.tracks?.items[0]);
+   
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    firste();
+  }, [])
+  useEffect(() => {
+   console.log(spotifysong)
+   audioRef.current.play();
+   audioRef.current.volume= 0.2;
+  }, [spotifysong])
+
+  useEffect(() => {
+    firste();
+    setcurrentsong(tracks[currentsongindex]);
+  }, [currentsongindex])
+  useEffect(() => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
+  }, [currentsong])
+
+  useEffect(() => {
+    const updateTime = () => {
+      if (audioRef.current && !audioRef.current.paused) {
+        const seconds = Math.floor(audioRef.current.currentTime);
+        const minutes = Math.floor(seconds / 60);
+        const formattedSeconds = (seconds % 60).toString().padStart(2, "0");
+        setcurrentsongtimne(`${minutes}:${formattedSeconds}`);
+      }
+    };
+
+    const interval = setInterval(updateTime, 500); // Update every second
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, [currentsong]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.onloadedmetadata = () => {
+        const totalSeconds = Math.floor(audioRef.current.duration);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        setDuration(`${minutes}:${seconds.toString().padStart(2, "0")}`);
+      };
+    }
+  }, [currentsong]);
+
+
+
+  const handleChange = (e) => {
+    // console.log(e.target.value);
+    audioRef.current.currentTime = e.target.value;
+    audioRef.current.play();
+    setsongplaying(true)
+  }
+
+  const playpause = function () {
+
+    // console.log(audioRef.current.currentTime)
+    // console.log(audioRef.current.duration)
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+      setsongplaying(true)
+    } else {
+      audioRef.current.pause();
+      setsongplaying(false)
+    }
+  }
+
+  const nextsong = () => {
+    if (currentsongindex >= tracks.length - 1) {
+      setcurrentsongindex(0)
+    } else {
+      setcurrentsongindex(currentsongindex + 1)
+    }
+    setsongplaying(true);
+  }
+  const prevsong = () => {
+    if (currentsongindex <= 0) {
+      setcurrentsongindex(0)
+    } else {
+      setcurrentsongindex(currentsongindex - 1)
+    }
+    setsongplaying(true);
+  }
+
+  return (
+    <>
+    <div className="navbar">
+    <span>  V-Music <FaMusic/> </span>
+      <div className="search" >
+        <input type="text" onChange={(e)=> setsearch(e.target.value)}  placeholder='Search Song...' />
+        <FaSearch onClick={firste} />
+      </div>
+    </div>
+      <div className="container">
+        <div className="tracklist">
+        {tracks?.map((val,ind)=>{
+          return <div key={val.id} className='card' >
+               <div className="playbutton" onClick={()=> setspotifysong(val)} title='Play Now'><FaPlay/>  </div>
+               <img src={val.album.images[1].url} alt="" />
+               <p>{val.name}</p>
+               <p className='artist'>Artist: {val.artists[0].name} </p>
+               <p>❤️ {val.popularity}</p>
+               {/* <audio src={val.preview_url} controls></audio> */}
+          </div>
+        }) }
+        </div>
+        <div id="player" >
+          <nav>
+            <div className="ico"> <FaChevronLeft /> </div>
+            <div className="ico"> <MdMenu /> </div>
+          </nav>
+          <div className="image">
+            <img src={spotifysong?.album?.images[1]?.url} alt="" />
+          </div>
+          <header className='header'>
+            <h2>{spotifysong?.name} </h2>
+            <p>{spotifysong?.artists?.[0]?.name || "N/A"}</p>
+          </header>
+          <audio ref={audioRef} src={spotifysong?.preview_url} ></audio>
+          <div id="songlength">
+            <div className="timer">
+              <div className="start">{currentsongtimne}</div>
+              <div className="end">{duration}</div>
+            </div>
+            <input
+              type="range"
+              onChange={handleChange}
+              value={Math.floor(audioRef?.current?.currentTime) || 0}
+              max={Math.floor(audioRef?.current?.duration) || 100}
+              id="progress"
+            />
+          </div>
+          <div id="controls">
+            <div className="ico" onClick={prevsong}><FaBackward /> </div>
+            <div className="ico" onClick={playpause}>{audioRef?.current?.paused ? <FaPlay />:<FaPause />} </div>
+            <div className="ico" onClick={nextsong}><FaForward /> </div>
+          </div>
+
+          <div
+            id="back"
+            style={{
+              backgroundImage: `url(${spotifysong?.album?.images[1]?.url})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }} >  </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default App
