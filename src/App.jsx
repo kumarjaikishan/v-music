@@ -1,17 +1,17 @@
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
-import { FaChevronLeft,FaBackward } from "react-icons/fa";
+import { FaChevronLeft,FaBackward,FaForward,FaPause,FaPlay,FaSearch } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 // import { FaBackward } from "react-icons/fa";
-import { FaForward } from "react-icons/fa";
-import { FaPause } from "react-icons/fa";
-import { FaPlay } from "react-icons/fa";
+// import { FaForward } from "react-icons/fa";
+// import { FaPause } from "react-icons/fa";
+// import { FaPlay } from "react-icons/fa";
+// import { FaSearch } from "react-icons/fa";
 import { FaMusic } from "react-icons/fa6";
-import { FaSearch } from "react-icons/fa";
 
 function App() {
-  const [currentsongindex, setcurrentsongindex] = useState(0);
   const [currentsong, setcurrentsong] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [duration, setDuration] = useState("0:00");
   const [spotifysong,setspotifysong]= useState({})
   const [search,setsearch]= useState('bulbula')
@@ -26,7 +26,7 @@ function App() {
       let res = await fetch(`https://v1.nocodeapi.com/kumarjai/spotify/IbIBTKsrfdicMJoB/search?q=${search}&type=track`);
 
       let data = await res.json();
-      // console.log(data)
+      console.log(data)
       settracks(data.tracks.items);
       setspotifysong(data?.tracks?.items[0]);
    
@@ -38,20 +38,13 @@ function App() {
   useEffect(() => {
     firste();
   }, [])
+
   useEffect(() => {
   //  console.log(spotifysong)
    audioRef.current.play();
    audioRef.current.volume= 0.2;
   }, [spotifysong])
 
-  useEffect(() => {
-    firste();
-    setcurrentsong(tracks[currentsongindex]);
-  }, [currentsongindex])
-  useEffect(() => {
-    audioRef.current.currentTime = 0;
-    audioRef.current.play();
-  }, [currentsong])
 
   useEffect(() => {
     const updateTime = () => {
@@ -102,20 +95,22 @@ function App() {
   }
 
   const nextsong = () => {
-    if (currentsongindex >= tracks.length - 1) {
-      setcurrentsongindex(0)
+    if (currentIndex >= tracks.length - 1) {
+      setspotifysong(tracks[0])
+      setCurrentIndex(0)
     } else {
-      setcurrentsongindex(currentsongindex + 1)
+      setspotifysong(tracks[currentIndex+1])
+      setCurrentIndex((prev)=>prev+1)
     }
-    setsongplaying(true);
   }
   const prevsong = () => {
-    if (currentsongindex <= 0) {
-      setcurrentsongindex(0)
+    if (currentIndex <= 0) {
+      setspotifysong(tracks.length - 1)
+      setCurrentIndex(tracks.length - 1)
     } else {
-      setcurrentsongindex(currentsongindex - 1)
+      setspotifysong(tracks[currentIndex-1])
+      setCurrentIndex((prev)=>prev-1)
     }
-    setsongplaying(true);
   }
 
   return (
@@ -131,7 +126,7 @@ function App() {
         <div className="tracklist">
         {tracks?.map((val,ind)=>{
           return <div key={val.id} className='card' >
-               <div className="playbutton" onClick={()=> setspotifysong(val)} title='Play Now'><FaPlay/>  </div>
+               <div className="playbutton" onClick={()=> {setspotifysong(val); setCurrentIndex(ind)}} title='Play Now'><FaPlay/>  </div>
                <img src={val.album.images[1].url} alt="" />
                <p>{val.name}</p>
                <p className='artist'>Artist: {val.artists[0].name} </p>
