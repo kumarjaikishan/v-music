@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
-import { FaChevronLeft,FaBackward,FaForward,FaPause,FaPlay,FaSearch } from "react-icons/fa";
+import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaSearch } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 // import { FaBackward } from "react-icons/fa";
 // import { FaForward } from "react-icons/fa";
@@ -13,12 +13,12 @@ function App() {
   const [currentsong, setcurrentsong] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
   const [duration, setDuration] = useState("0:00");
-  const [spotifysong,setspotifysong]= useState({})
-  const [search,setsearch]= useState('bulbula')
+  const [spotifysong, setspotifysong] = useState({})
+  const [search, setsearch] = useState('bulbula')
   const [currentsongtimne, setcurrentsongtimne] = useState("0:00");
   const audioRef = useRef(null);
   const [tracks, settracks] = useState([])
-  
+
 
   const firste = async () => {
     try {
@@ -29,20 +29,20 @@ function App() {
       console.log(data)
       settracks(data.tracks.items);
       setspotifysong(data?.tracks?.items[0]);
-   
+
     } catch (error) {
       console.log(error)
     }
   }
 
   useEffect(() => {
-    firste();
+    // firste();
   }, [])
 
   useEffect(() => {
-  //  console.log(spotifysong)
-   audioRef.current.play();
-   audioRef.current.volume= 0.2;
+    //  console.log(spotifysong)
+    audioRef.current.play();
+    audioRef.current.volume = 0.2;
   }, [spotifysong])
 
 
@@ -99,8 +99,8 @@ function App() {
       setspotifysong(tracks[0])
       setCurrentIndex(0)
     } else {
-      setspotifysong(tracks[currentIndex+1])
-      setCurrentIndex((prev)=>prev+1)
+      setspotifysong(tracks[currentIndex + 1])
+      setCurrentIndex((prev) => prev + 1)
     }
   }
   const prevsong = () => {
@@ -108,32 +108,32 @@ function App() {
       setspotifysong(tracks.length - 1)
       setCurrentIndex(tracks.length - 1)
     } else {
-      setspotifysong(tracks[currentIndex-1])
-      setCurrentIndex((prev)=>prev-1)
+      setspotifysong(tracks[currentIndex - 1])
+      setCurrentIndex((prev) => prev - 1)
     }
   }
 
   return (
     <>
-    <div className="navbar">
-    <span>  V-Music <FaMusic/> </span>
-      <div className="search" >
-        <input type="text" onChange={(e)=> setsearch(e.target.value)}  placeholder='Search Song...' />
-        <FaSearch onClick={firste} />
+      <div className="navbar">
+        <span>  V-Music <FaMusic /> </span>
+        <div className="search" >
+          <input type="text" onChange={(e) => setsearch(e.target.value)} placeholder='Search Song...' />
+          <FaSearch onClick={firste} />
+        </div>
       </div>
-    </div>
       <div className="container">
         <div className="tracklist">
-        {tracks?.map((val,ind)=>{
-          return <div key={val.id} className='card' >
-               <div className="playbutton" onClick={()=> {setspotifysong(val); setCurrentIndex(ind)}} title='Play Now'><FaPlay/>  </div>
-               <img src={val.album.images[1].url} alt="" />
-               <p>{val.name}</p>
-               <p className='artist'>Artist: {val.artists[0].name} </p>
-               <p>❤️ {val.popularity}</p>
-               {/* <audio src={val.preview_url} controls></audio> */}
-          </div>
-        }) }
+          {tracks?.map((val, ind) => {
+            return <div key={val.id} className='card' >
+              <div className="playbutton" onClick={() => { setspotifysong(val); setCurrentIndex(ind) }} title='Play Now'><FaPlay />  </div>
+              <img src={val.album.images[1].url} alt="" />
+              <p>{val.name}</p>
+              <p className='artist'>Artist: {val.artists[0].name} </p>
+              <p>❤️ {val.popularity}</p>
+              {/* <audio src={val.preview_url} controls></audio> */}
+            </div>
+          })}
         </div>
         <div id="player" >
           <nav>
@@ -144,9 +144,29 @@ function App() {
             <img src={spotifysong?.album?.images[1]?.url} alt="" />
           </div>
           <header className='header'>
-            <h2>{spotifysong?.name} </h2>
-            <p>{spotifysong?.artists?.[0]?.name || "N/A"}</p>
+            <h2>{spotifysong?.name || "name"} </h2>
+            <p>{spotifysong?.artists?.[0]?.name || "Artist🎨"}</p>
           </header>
+          <div className="formobile">
+            <div className="image">
+              <img src={spotifysong?.album?.images[1]?.url} alt="" />
+            </div>
+            <header className='header'>
+              <h2>{spotifysong?.name || "name"} </h2>
+              <p>{spotifysong?.artists?.[0]?.name || "Artist🎨"}</p>
+            </header>
+          </div>
+          <div className="mobilecontrols">
+            <div className="start">{currentsongtimne}</div>
+            <input
+              type="range"
+              onChange={handleChange}
+              value={Math.floor(audioRef?.current?.currentTime) || 0}
+              max={Math.floor(audioRef?.current?.duration) || 100}
+              id="progress"
+            />
+            <div className="end">{duration}</div>
+          </div>
           <audio ref={audioRef} src={spotifysong?.preview_url} ></audio>
           <div id="songlength">
             <div className="timer">
@@ -163,7 +183,7 @@ function App() {
           </div>
           <div id="controls">
             <div className="ico" onClick={prevsong}><FaBackward /> </div>
-            <div className="ico" onClick={playpause}>{audioRef?.current?.paused ? <FaPlay />:<FaPause />} </div>
+            <div className="ico" onClick={playpause}>{audioRef?.current?.paused ? <FaPlay /> : <FaPause />} </div>
             <div className="ico" onClick={nextsong}><FaForward /> </div>
           </div>
 
