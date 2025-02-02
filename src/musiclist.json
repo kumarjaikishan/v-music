@@ -1,0 +1,30 @@
+[
+    {
+        "id":"jhgy54",
+        "songname":"Bul Bula Re Bul Bula - Aunty No.1",
+        "artist":"kumar sanu",
+        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Bul+Bula+Re+Bul+Bula+-+Aunty+No.+1.mp3",
+        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Bul+Bula+Re+Bul+Bula.jpg"
+    },
+    {
+        "id":"jhgy55",
+        "songname":"Mohabbat Ho Na Jaye Dekha Jo Tumko",
+        "artist":"kumar sanu",
+        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.mp3",
+        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.jpg"
+    },
+    {
+        "id":"jhgy56",
+        "songname":"To Chaloon - Border",
+        "artist":"kumar sanu",
+        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/To+Chaloon+-+Border.mp3",
+        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/To+Chaloon+-+Border.jpg"
+    },
+    {
+        "id":"jhgy57",
+        "songname":"Zara Zara - Rehnaa Hai",
+        "artist":"kumar sanu",
+        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Zara+Zara+-+Rehnaa+Hai.mp3",
+        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Zara+Zara+-+Rehnaa+Hai+Terre+Dil+Mei.jpg"
+    }
+]

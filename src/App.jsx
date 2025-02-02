@@ -3,6 +3,7 @@ import './App.css'
 import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaSearch } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 import { FaMusic } from "react-icons/fa6";
+import songlist from './musiclist.json'
 
 function App() {
   const [currentsong, setcurrentsong] = useState({});
@@ -12,7 +13,7 @@ function App() {
   const [search, setsearch] = useState('bulbula')
   const [currentsongtimne, setcurrentsongtimne] = useState("0:00");
   const audioRef = useRef(null);
-  const [tracks, settracks] = useState([])
+  const [tracks, settracks] = useState(songlist)
 
 
   const firste = async () => {
@@ -32,6 +33,7 @@ function App() {
 
   useEffect(() => {
     // firste();
+    console.log(songlist)
   }, [])
 
   useEffect(() => {
@@ -122,10 +124,18 @@ function App() {
           {tracks?.map((val, ind) => {
             return <div key={val.id} className='card' >
               <div className="playbutton" onClick={() => { setspotifysong(val); setCurrentIndex(ind) }} title='Play Now'><FaPlay />  </div>
-              <img src={val.album.images[1].url} alt="" />
-              <p>{val.name}</p>
-              <p className='artist'>Artist: {val.artists[0].name} </p>
-              <p>❤️ {val.popularity}</p>
+              <img src={val.image} alt="" />
+              <p>{val.songname}</p>
+              <p className='artist'>Artist: {val.artist} </p>
+              {/* <audio src={val.preview_url} controls></audio> */}
+            </div>
+          })}
+          {tracks?.map((val, ind) => {
+            return <div key={val.id} className='card' >
+              <div className="playbutton" onClick={() => { setspotifysong(val); setCurrentIndex(ind) }} title='Play Now'><FaPlay />  </div>
+              <img src={val.image} alt="" />
+              <p>{val.songname}</p>
+              <p className='artist'>Artist: {val.artist} </p>
               {/* <audio src={val.preview_url} controls></audio> */}
             </div>
           })}
@@ -136,19 +146,19 @@ function App() {
             <div className="ico"> <MdMenu /> </div>
           </nav>
           <div className="image">
-            <img src={spotifysong?.album?.images[1]?.url} alt="" />
+            <img src={spotifysong?.image} alt="" />
           </div>
           <header className='header'>
-            <h2>{spotifysong?.name || "name"} </h2>
-            <p>{spotifysong?.artists?.[0]?.name || "Artist🎨"}</p>
+            <h2>{spotifysong?.songname || "name"} </h2>
+            <p>{spotifysong?.artist || "Artist🎨"}</p>
           </header>
           <div className="formobile">
             <div className="image">
-              <img src={spotifysong?.album?.images[1]?.url} alt="" />
+              <img src={spotifysong?.image} alt="" />
             </div>
             <header className='header'>
-              <h2>{spotifysong?.name || "name"} </h2>
-              <p>{spotifysong?.artists?.[0]?.name || "Artist🎨"}</p>
+              <h2>{spotifysong?.songname || "name"} </h2>
+              <p>{spotifysong?.artist || "Artist🎨"}</p>
             </header>
           </div>
           <div className="mobilecontrols">
@@ -162,7 +172,7 @@ function App() {
             />
             <div className="end">{duration}</div>
           </div>
-          <audio ref={audioRef} src={spotifysong?.preview_url} ></audio>
+          <audio ref={audioRef} src={spotifysong?.url} ></audio>
           <div id="songlength">
             <div className="timer">
               <div className="start">{currentsongtimne}</div>
@@ -185,7 +195,7 @@ function App() {
           <div
             id="back"
             style={{
-              backgroundImage: `url(${spotifysong?.album?.images[1]?.url})`,
+              backgroundImage: `url(${spotifysong?.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }} >  </div>

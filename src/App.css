@@ -6,7 +6,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 20px; */
   text-align: center;
 }
 
@@ -59,6 +59,7 @@
   width: 100%;
   height: 60px;
   background: #555;
+  color: #fff;
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
@@ -102,6 +103,7 @@
 
 .container {
   /* border: 1px solid white; */
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -356,62 +358,106 @@
 }
 
 @media only screen and (max-width:600px) {
-  .card {
-    width: 150px;
-    padding: 0;
-    border-radius: 8px;
-
-    .playbutton {
-      position: absolute;
-      right: 5px;
-      top: 210px;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      background: var(--maincolor);
-      display: none;
-      cursor: pointer;
-      transition: 0.1s ease;
-
-      svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        font-size: 24px;
+  #root {
+    width: 100vw;
+    padding: 10px 5px;
+  }
+  .navbar {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 8px;
+   
+    padding: 5px 10px;
+  
+    span {
+  
+      >svg {
+        margin-left: 7px;
+        font-size: 20px;
       }
     }
-
-    .playbutton:hover {
-      transform: scale(1.05);
+  
+    input {
+      height: 40px;
+      width: 210px;
+      padding: 2px 4px;
+      outline: none;
+      border: none;
+      border-radius: 5px;
+      margin: 10px;
+      padding-left: 10px;
     }
-
-    img {
-      width: 100%;
+  
+    div {
+      svg {
+        font-size: 28px;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+  
+      svg:hover {
+        scale: 1.04;
+      }
     }
+  
+  }
+  .container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
 
-    p {
-      text-align: left;
-      padding: 5px;
-      font-size: 16px;
-    }
+    .tracklist{
+       
 
-    .artist {
-      margin-top: 5px;
-      padding: 5px;
-      font-size: 14px;
-    }
-
-    audio {
-      max-width: 100%;
+      .card {
+        width: 120px;
+        border-radius: 6px;
+    
+        .playbutton {
+          top: 100px;
+          width: 30px;
+          height: 30px;
+    
+          svg {
+            font-size: 18px;
+          }
+        }
+    
+        .playbutton:hover {
+          transform: scale(1.05);
+        }
+    
+        img {
+          width: 100%;
+        }
+    
+        p {
+          padding: 5px;
+          font-size: 11px;
+        }
+    
+        .artist {
+          margin-top: 1px;
+          padding: 5px;
+          font-size: 8px;
+        }
+    
+       
+      }
     }
   }
+  
 
   #player {
     position: fixed;
-    bottom: 5px;
-    width: 90vw;
+    top: 70vh;
+    left: 50%;
+    transform: translateX(-50%);
+    /* bottom: 5px; */
+    width: 95vw;
     height: fit-content;
     padding: 5px;
 
