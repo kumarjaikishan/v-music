@@ -2,11 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaSearch } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
-// import { FaBackward } from "react-icons/fa";
-// import { FaForward } from "react-icons/fa";
-// import { FaPause } from "react-icons/fa";
-// import { FaPlay } from "react-icons/fa";
-// import { FaSearch } from "react-icons/fa";
 import { FaMusic } from "react-icons/fa6";
 
 function App() {

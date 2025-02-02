@@ -197,6 +197,10 @@
   user-select: none;
   overflow: hidden;
 
+  .mobilecontrols, .formobile{
+     display: none;
+  }
+
 
   #back {
     position: absolute;
