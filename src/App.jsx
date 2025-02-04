@@ -45,7 +45,7 @@ function App() {
       audioRef.current.volume = 0.3;
     }
   }, [spotifysong]);
-  
+
 
 
   useEffect(() => {
@@ -83,36 +83,26 @@ function App() {
 
   const playpause = function () {
     if (audioRef.current) {
-      if(isPlaying){
+      if (isPlaying) {
         audioRef.current.pause();
-      }else {
-        audioRef.current.play().catch((err)=> console.log("autoplay bolcked:", err));
+      } else {
+        audioRef.current.play().catch((err) => console.log("autoplay bolcked:", err));
       }
-    } 
+    }
   }
 
   const nextsong = () => {
-    if (currentIndex >= (tracks.length - 1)) {
-      setspotifysong(tracks[0])
-      setCurrentIndex(0)
-      console.log("first")
-    } else {
-      setspotifysong(tracks[currentIndex + 1])
-      setCurrentIndex(currentIndex + 1)
-    }
+    let nextindex = currentIndex >= (tracks.length - 1) ? 0 : currentIndex + 1;
+    setspotifysong(tracks[nextindex])
+    setCurrentIndex(nextindex)
   }
 
-  
   const prevsong = () => {
-   
-    if (currentIndex <= 0) {
-      setspotifysong(tracks[tracks.length - 1])
-      setCurrentIndex(tracks.length - 1)
-    } else {
-      setspotifysong(tracks[currentIndex - 1])
-      setCurrentIndex((prev) => prev - 1)
-    }
+    let previndex = currentIndex <= 0 ? tracks.length - 1 : currentIndex - 1
+    setspotifysong(tracks[previndex])
+    setCurrentIndex(previndex)
   }
+
   const eventdelegate = (e) => {
     if (e.target.closest('.card')?.id) {
       if (e.target.classList.contains('playbutton')) {
@@ -183,7 +173,7 @@ function App() {
             <div className="ico"> <FaChevronLeft /> </div>
             <div className="ico"> <MdMenu /> </div>
           </nav>
-          <div className={isPlaying? "image  playing": "image"}>
+          <div className={isPlaying ? "image  playing" : "image"}>
             <img src={spotifysong?.image} alt="" />
           </div>
           <header className='header'>
@@ -244,10 +234,10 @@ function App() {
         </div>
         <audio ref={audioRef}></audio>
         <div id="controls">
-            <div className="ico" onClick={prevsong}><FaBackward /> </div>
-            <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
-            <div className="ico" onClick={nextsong}><FaForward /> </div>
-          </div>
+          <div className="ico" onClick={prevsong}><FaBackward /> </div>
+          <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
+          <div className="ico" onClick={nextsong}><FaForward /> </div>
+        </div>
       </div>
     </>
   )

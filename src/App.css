@@ -1,6 +1,8 @@
 :root {
   --background: #ffe0e5;
   --maincolor: #f53192;
+  --cardwidth:270px;
+  --mobilecardwidth:120px;
 }
 
 #root {
@@ -140,11 +142,9 @@
   .tracklist {
     width: 800px;
     /* border: 1px solid red; */
-
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.5rem;
 
     .card {
       background: #444;
@@ -184,8 +184,8 @@
       }
 
       img {
-        width: 270px;
-        height: 270px;
+        width: var(--cardwidth);
+        height: var(--cardwidth);
         object-fit: cover;
       }
 
@@ -193,6 +193,10 @@
         text-align: left;
         padding: 5px;
         font-size: 16px;
+        width: var(--cardwidth);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .artist {
@@ -508,10 +512,9 @@
   }
 
   .navbar {
-    width: 95%;
+    width: 100%;
     height: 60px;
     margin-bottom: 8px;
-
     padding: 5px 10px;
 
     span {
@@ -551,15 +554,16 @@
   .container {
     position: relative;
     width: 100%;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid black; */
 
     .tracklist {
-
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 0.5rem;
 
       .card {
-        width: 120px;
+        width: var(--mobilecardwidth);
         border-radius: 6px;
 
         .playbutton {
@@ -577,13 +581,13 @@
         }
 
         img {
-          width: 120px;
-          height: 120px;
+          width: var(--mobilecardwidth);
+          height: var(--mobilecardwidth);
         }
 
         p {
           padding: 5px;
-          font-size: 11px;
+          font-size: 10px;
         }
 
         .artist {
