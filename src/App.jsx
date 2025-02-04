@@ -211,7 +211,7 @@ function App() {
             }} >  </div>
         </div>
       </div>
-      <div id="mobileplayer" >
+      <footer id="mobileplayer" >
         <div className="formobile">
           <div className="image">
             <img src={spotifysong?.image} alt="" />
@@ -238,7 +238,7 @@ function App() {
           <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
           <div className="ico" onClick={nextsong}><FaForward /> </div>
         </div>
-      </div>
+      </footer>
     </>
   )
 }
