@@ -1,30 +1,51 @@
 [
     {
-        "id":"jhgy54",
-        "songname":"Bul Bula Re Bul Bula - Aunty No.1",
-        "artist":"kumar sanu",
-        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Bul+Bula+Re+Bul+Bula+-+Aunty+No.+1.mp3",
-        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Bul+Bula+Re+Bul+Bula.jpg"
+      "id": "jhgy54",
+      "songname": "Bul Bula Re Bul Bula - Aunty No.1",
+      "artist": "Udit Narayan, Alka Yagnik",
+      "album": "Aunty No. 1",
+      "genre": "Bollywood, Soundtrack",
+      "releaseDate": "1997-11-03",
+      "url": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Bul+Bula+Re+Bul+Bula+-+Aunty+No.+1.mp3",
+      "image": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Bul+Bula+Re+Bul+Bula.jpg",
+      "liked": false,
+      "playCount": 0
     },
     {
-        "id":"jhgy55",
-        "songname":"Mohabbat Ho Na Jaye Dekha Jo Tumko",
-        "artist":"kumar sanu",
-        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.mp3",
-        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.jpg"
+      "id": "jhgy55",
+      "songname": "Mohabbat Ho Na Jaye Dekha Jo Tumko",
+      "artist": "Alka Yagnik, Kumar Sanu",
+      "album": "Kasoor",
+      "genre": "Bollywood, Soundtrack",
+      "releaseDate": "2001-02-02",
+      "url": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.mp3",
+      "image": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Mohabbat+Ho+Na+Jaye+Dekha+Jo+Tumko.jpg",
+      "liked": false,
+      "playCount": 0
     },
     {
-        "id":"jhgy56",
-        "songname":"To Chaloon - Border",
-        "artist":"kumar sanu",
-        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/To+Chaloon+-+Border.mp3",
-        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/To+Chaloon+-+Border.jpg"
+      "id": "jhgy56",
+      "songname": "To Chaloon - Border",
+      "artist": "Roop Kumar Rathod",
+      "album": "Border",
+      "genre": "Bollywood, Soundtrack",
+      "releaseDate": "1997-06-13",
+      "url": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/To+Chaloon+-+Border.mp3",
+      "image": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/To+Chaloon+-+Border.jpg",
+      "liked": false,
+      "playCount": 0
     },
     {
-        "id":"jhgy57",
-        "songname":"Zara Zara - Rehnaa Hai",
-        "artist":"kumar sanu",
-        "url":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Zara+Zara+-+Rehnaa+Hai.mp3",
-        "image":"https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Zara+Zara+-+Rehnaa+Hai+Terre+Dil+Mei.jpg"
+      "id": "jhgy57",
+      "songname": "Zara Zara - Rehnaa Hai",
+      "artist": "Bombay Jayashri",
+      "album": "Rehnaa Hai Terre Dil Mein",
+      "genre": "Bollywood, Soundtrack",
+      "releaseDate": "2001-10-19",
+      "url": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/mp3/Zara+Zara+-+Rehnaa+Hai.mp3",
+      "image": "https://accosoftmusic.s3.ap-south-1.amazonaws.com/thumbnail/Zara+Zara+-+Rehnaa+Hai+Terre+Dil+Mei.jpg",
+      "liked": false,
+      "playCount": 0
     }
-]
+  ]
+  
