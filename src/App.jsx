@@ -14,7 +14,7 @@ function App() {
   const [searched, setsearched] = useState([])
   const [tracks, settracks] = useState(songlist)
   const [isPlaying, setIsPlaying] = useState(false);
-  const [searchinp,setsearchinp]= useState('')
+  const [searchinp, setsearchinp] = useState('')
 
 
   useEffect(() => {
@@ -38,10 +38,14 @@ function App() {
   }, []);
 
   useEffect(() => {
-    //  console.log(spotifysong)
-    audioRef.current.play();
-    audioRef.current.volume = 0.2;
-  }, [spotifysong])
+    if (audioRef.current && spotifysong?.url) {
+      audioRef.current.src = spotifysong.url;
+      audioRef.current.load(); // Ensure the new song is loaded
+      audioRef.current.play().catch((err) => console.log("Autoplay blocked", err));
+      audioRef.current.volume = 0.3;
+    }
+  }, [spotifysong]);
+  
 
 
   useEffect(() => {
@@ -73,31 +77,36 @@ function App() {
 
 
   const handleChange = (e) => {
-    // console.log(e.target.value);
     audioRef.current.currentTime = e.target.value;
     audioRef.current.play();
   }
 
   const playpause = function () {
-    if (audioRef.current.paused) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
+    if (audioRef.current) {
+      if(isPlaying){
+        audioRef.current.pause();
+      }else {
+        audioRef.current.play().catch((err)=> console.log("autoplay bolcked:", err));
+      }
+    } 
   }
 
   const nextsong = () => {
-    if (currentIndex >= tracks.length - 1) {
+    if (currentIndex >= (tracks.length - 1)) {
       setspotifysong(tracks[0])
       setCurrentIndex(0)
+      console.log("first")
     } else {
       setspotifysong(tracks[currentIndex + 1])
-      setCurrentIndex((prev) => prev + 1)
+      setCurrentIndex(currentIndex + 1)
     }
   }
+
+  
   const prevsong = () => {
+   
     if (currentIndex <= 0) {
-      setspotifysong(tracks.length - 1)
+      setspotifysong(tracks[tracks.length - 1])
       setCurrentIndex(tracks.length - 1)
     } else {
       setspotifysong(tracks[currentIndex - 1])
@@ -108,7 +117,7 @@ function App() {
     if (e.target.closest('.card')?.id) {
       if (e.target.classList.contains('playbutton')) {
         setspotifysong(tracks[e.target.closest('.card').id]);
-        setCurrentIndex(e.target.closest('.card').id)
+        setCurrentIndex(parseInt(e.target.closest('.card').id))
         // playpause()
         if (currentIndex === e.target.closest('.card')?.id) playpause();
       }
@@ -174,35 +183,16 @@ function App() {
             <div className="ico"> <FaChevronLeft /> </div>
             <div className="ico"> <MdMenu /> </div>
           </nav>
-          <div className="image">
+          <div className={isPlaying? "image  playing": "image"}>
             <img src={spotifysong?.image} alt="" />
           </div>
           <header className='header'>
             <h2>{spotifysong?.songname || "name"} </h2>
             <p>{spotifysong?.artist || "Artist🎨"}</p>
           </header>
-          <div className="formobile">
-            <div className="image">
-              <img src={spotifysong?.image} alt="" />
-            </div>
-            <header className='header'>
-              <h2>{spotifysong?.songname || "name"} </h2>
-              <p>{spotifysong?.artist || "Artist🎨"} </p>
-            </header>
-          </div>
-          <div className="mobilecontrols">
-            <div className="start">{currentsongtimne}</div>
-            <input
-              type="range"
-              onChange={handleChange}
-              value={Math.floor(audioRef?.current?.currentTime) || 0}
-              max={Math.floor(audioRef?.current?.duration) || 100}
-              id="progress"
-            />
-            <div className="end">{duration}</div>
-          </div>
-          <audio ref={audioRef} src={''} ></audio>
-          {/* <audio ref={audioRef} src={spotifysong?.url} ></audio> */}
+
+          {/* <audio ref={audioRef} src={''} ></audio> */}
+          <audio ref={audioRef} ></audio>
           <div id="songlength">
             <div className="timer">
               <div className="start">{currentsongtimne}</div>
@@ -232,66 +222,33 @@ function App() {
         </div>
       </div>
       <div id="mobileplayer" >
-          <nav>
-            <div className="ico"> <FaChevronLeft /> </div>
-            <div className="ico"> <MdMenu /> </div>
-          </nav>
+        <div className="formobile">
           <div className="image">
             <img src={spotifysong?.image} alt="" />
           </div>
           <header className='header'>
             <h2>{spotifysong?.songname || "name"} </h2>
-            <p>{spotifysong?.artist || "Artist🎨"}</p>
+            <p>{spotifysong?.artist || "Artist🎨"} </p>
           </header>
-          <div className="formobile">
-            <div className="image">
-              <img src={spotifysong?.image} alt="" />
-            </div>
-            <header className='header'>
-              <h2>{spotifysong?.songname || "name"} </h2>
-              <p>{spotifysong?.artist || "Artist🎨"} </p>
-            </header>
-          </div>
-          <div className="mobilecontrols">
-            <div className="start">{currentsongtimne}</div>
-            <input
-              type="range"
-              onChange={handleChange}
-              value={Math.floor(audioRef?.current?.currentTime) || 0}
-              max={Math.floor(audioRef?.current?.duration) || 100}
-              id="progress"
-            />
-            <div className="end">{duration}</div>
-          </div>
-          <audio ref={audioRef} src={''} ></audio>
-          {/* <audio ref={audioRef} src={spotifysong?.url} ></audio> */}
-          <div id="songlength">
-            <div className="timer">
-              <div className="start">{currentsongtimne}</div>
-              <div className="end">{duration}</div>
-            </div>
-            <input
-              type="range"
-              onChange={handleChange}
-              value={Math.floor(audioRef?.current?.currentTime) || 0}
-              max={Math.floor(audioRef?.current?.duration) || 100}
-              id="progress"
-            />
-          </div>
-          <div id="controls">
+        </div>
+        <div className="mobilecontrols">
+          <div className="start">{currentsongtimne}</div>
+          <input
+            type="range"
+            onChange={handleChange}
+            value={Math.floor(audioRef?.current?.currentTime) || 0}
+            max={Math.floor(audioRef?.current?.duration) || 100}
+            id="progress"
+          />
+          <div className="end">{duration}</div>
+        </div>
+        <audio ref={audioRef}></audio>
+        <div id="controls">
             <div className="ico" onClick={prevsong}><FaBackward /> </div>
             <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
             <div className="ico" onClick={nextsong}><FaForward /> </div>
           </div>
-
-          <div
-            id="back"
-            style={{
-              backgroundImage: `url(${spotifysong?.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }} >  </div>
-        </div>
+      </div>
     </>
   )
 }
