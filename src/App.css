@@ -1,8 +1,8 @@
 :root {
   --background: #ffe0e5;
   --maincolor: #f53192;
-  --cardwidth:270px;
-  --mobilecardwidth:120px;
+  --cardwidth: 270px;
+  --mobilecardwidth: 120px;
 }
 
 #root {
@@ -212,10 +212,11 @@
 
     .card.playing .playbutton {
       display: block;
-     
+
     }
 
-    .card:hover,.card.playing {
+    .card:hover,
+    .card.playing {
       background: #0c1325;
     }
 
@@ -232,7 +233,7 @@
   width: 350px;
   max-height: 450px;
   background: var(--background);
-  padding: 25px 30px;
+  padding: 25px 20px;
   border-radius: 10px;
   text-align: center;
   display: flex;
@@ -299,7 +300,8 @@
       transition: 0.5s ease-in-out;
     }
   }
-  .image.playing{
+
+  .image.playing {
     animation: rotatee 7s linear forwards infinite
   }
 
@@ -359,7 +361,8 @@
   #controls {
     z-index: 2;
     margin-top: 10px;
-    width: 100%;
+    width: 110%;
+    /* outline: auto; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -382,11 +385,11 @@
       border: 1px solid var(--maincolor);
     }
 
-    .ico:nth-child(2) {
+    .ico.playpause {
       width: 60px;
       height: 60px;
       border: 3px solid #fff;
-      margin: 0 30px;
+      margin: 0 20px;
       background: var(--maincolor);
       color: #fff;
 
@@ -394,13 +397,72 @@
         font-size: 24px;
       }
     }
+    >span {
+      /* background: red; */
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      color: #555;
+      margin: 0 15px;
+      
+      svg {
+        vertical-align: middle;
+      }
+    }
+    .shuffle{
+      color: #555; 
+      border-radius: 50%;
+    }
+    .shuffle.active{
+      color: var(--maincolor);
+    }
+    /* .vol{
+      position: relative;
+     
+      input{
+        visibility: hidden;
+        pointer-events: none;
+        transition: 0.2s ease-in;
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: rotate(-90deg);
+        transform-origin: left;
+        width: 90px;
+        z-index: 6;
+      }
+      #vol{
+        -webkit-appearance: none;
+        width: 90px;
+        background: var(--maincolor);
+        height: 4px;
+      }
+      #vol::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: var(--maincolor);
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22);
+      }
+      &:hover input{
+        visibility: visible;
+        pointer-events: all;
+      }
+    } */
+    .volup{
+      color: var(--maincolor);
+    }
   }
 }
+
 @keyframes rotatee {
-  0%{
-   transform: rotate(0);
+  0% {
+    transform: rotate(0);
   }
-  100%{
+
+  100% {
     transform: rotate(360deg);
   }
 }
@@ -457,7 +519,7 @@
     /* outline: auto; */
     height: 40px;
 
-    #progress {
+    #progress{
       -webkit-appearance: none;
       width: 80%;
       background: var(--maincolor);
@@ -485,6 +547,8 @@
 
   #controls {
     margin-top: -5px;
+    justify-content: flex-start;
+    width: 100%;
 
     .ico {
       width: 30px;
@@ -492,16 +556,82 @@
       border: 1px solid transparent;
     }
 
-    .ico:nth-child(2) {
+    .ico.playpause {
       width: 40px;
       height: 40px;
       border: 3px solid #fff;
-      margin: 0 30px;
+      margin: 0 27px;
 
       svg {
         font-size: 20px;
       }
     }
+
+    >span {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      color: #555;
+      margin: 0 20px;
+      
+      svg {
+        vertical-align: middle;
+      }
+    }
+    .shuffle{
+      color: #555; 
+      border-radius: 50%;
+    }
+    .shuffle.active{
+      color: var(--maincolor);
+    }
+    .vol{
+      position: relative;
+      width: 26px;
+      text-align: start;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      margin-left: 5px;
+      
+      svg{
+        width: 25px;
+        /* outline: auto; */
+      }
+
+      input{
+        display: none;
+        transition: 0.2s ease-in;
+        width: 10px;
+        top: -10px;
+        left: 50%;
+        z-index: 6;
+      }
+      #vol{
+        -webkit-appearance: none;
+        
+        background: var(--maincolor);
+        height: 4px;
+      }
+      #vol::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: var(--maincolor);
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22);
+      }
+      &:hover{
+        width: 120px;
+
+        input{
+          display: block;
+          width: 90px;
+        }
+      }
+    }
+    
   }
 }
 

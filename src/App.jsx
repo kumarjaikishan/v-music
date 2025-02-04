@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import './App.css'
-import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaSearch } from "react-icons/fa";
+import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaVolumeMute } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
-import { FaMusic } from "react-icons/fa6";
+import { FaMusic, FaShuffle, FaVolumeLow } from "react-icons/fa6";
 import songlist from './musiclist.json'
 
 function App() {
@@ -14,7 +14,10 @@ function App() {
   const [searched, setsearched] = useState([])
   const [tracks, settracks] = useState(songlist)
   const [isPlaying, setIsPlaying] = useState(false);
-  const [searchinp, setsearchinp] = useState('')
+  const [searchinp, setsearchinp] = useState('');
+  const [shuffle, setsuffle] = useState(false)
+  const [volume, setvolume] = useState(4);
+  const [ismute, setismute] = useState(false)
 
 
   useEffect(() => {
@@ -45,6 +48,14 @@ function App() {
       audioRef.current.volume = 0.3;
     }
   }, [spotifysong]);
+  useEffect(() => {
+    if (ismute) {
+      audioRef.current.volume = 0;
+    } else {
+      audioRef.current.volume = volume / 10;
+    }
+
+  }, [ismute]);
 
 
 
@@ -80,6 +91,11 @@ function App() {
     audioRef.current.currentTime = e.target.value;
     audioRef.current.play();
   }
+  const handlevol = (e) => {
+    // console.log(e.target.value)
+    audioRef.current.volume = e.target.value / 10;
+    setvolume(e.target.value);
+  }
 
   const playpause = function () {
     if (audioRef.current) {
@@ -92,7 +108,12 @@ function App() {
   }
 
   const nextsong = () => {
-    let nextindex = currentIndex >= (tracks.length - 1) ? 0 : currentIndex + 1;
+    let nextindex;
+    if (shuffle) {
+      nextindex = Math.floor(Math.random() * tracks.length)
+    } else {
+      nextindex = currentIndex >= (tracks.length - 1) ? 0 : currentIndex + 1;
+    }
     setspotifysong(tracks[nextindex])
     setCurrentIndex(nextindex)
   }
@@ -197,11 +218,21 @@ function App() {
             />
           </div>
           <div id="controls">
+            <span className={shuffle ? 'shuffle active' : 'shuffle'} onClick={() => setsuffle(!shuffle)}><FaShuffle /></span>
             <div className="ico" onClick={prevsong}><FaBackward /> </div>
-            <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
+            <div className="ico playpause" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
             <div className="ico" onClick={nextsong}><FaForward /> </div>
+            <span className='vol' onClick={() => setismute(!ismute)}>
+              {ismute ? <FaVolumeMute /> : <FaVolumeLow className='volup' />}
+              <input
+                type="range"
+                value={volume}
+                onChange={handlevol}
+                max={10}
+                id="vol"
+              />
+            </span>
           </div>
-
           <div
             id="back"
             style={{
@@ -235,8 +266,19 @@ function App() {
         <audio ref={audioRef}></audio>
         <div id="controls">
           <div className="ico" onClick={prevsong}><FaBackward /> </div>
-          <div className="ico" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
+          <div className="ico playpause" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
           <div className="ico" onClick={nextsong}><FaForward /> </div>
+          <span className={shuffle ? 'shuffle active' : 'shuffle'} onClick={() => setsuffle(!shuffle)}><FaShuffle /></span>
+          <span className='vol' >
+            {ismute ? <FaVolumeMute onClick={() => setismute(!ismute)} /> : <FaVolumeLow onClick={() => setismute(!ismute)} className='volup' />}
+            <input
+              type="range"
+              value={volume}
+              onChange={handlevol}
+              max={10}
+              id="vol"
+            />
+          </span>
         </div>
       </footer>
     </>
