@@ -1,0 +1,122 @@
+[
+    {
+        "id": "jhgy60",
+        "songname": "Aaye Ho Meri Zindagi Mein (Female)",
+        "artist": "Alka Yagnik",
+        "album": "Raja Hindustani",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "1996-11-15",
+        "url": "https://example.com/aaye_ho_meri_zindagi_mein_female.mp3",
+        "image": "https://example.com/aaye_ho_meri_zindagi_mein_female.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy61",
+        "songname": "Afghan Jalebi",
+        "artist": "Asrar",
+        "album": "Phantom",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "2015-07-30",
+        "url": "https://example.com/afghan_jalebi.mp3",
+        "image": "https://example.com/afghan_jalebi.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy62",
+        "songname": "Ek Dil Hai",
+        "artist": "Kumar Sanu, Alka Yagnik",
+        "album": "Ek Rishtaa: The Bond of Love",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "2001-05-18",
+        "url": "https://example.com/ek_dil_hai.mp3",
+        "image": "https://example.com/ek_dil_hai.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy63",
+        "songname": "Meri Chunar Udd Udd Jaye",
+        "artist": "Falguni Pathak",
+        "album": "Meri Chunar Udd Udd Jaye",
+        "genre": "Indie Pop",
+        "releaseDate": "2000-06-01",
+        "url": "https://example.com/meri_chunar_udd_udd_jaye.mp3",
+        "image": "https://example.com/meri_chunar_udd_udd_jaye.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy64",
+        "songname": "Hookah Bar",
+        "artist": "Himesh Reshammiya, Vineet Singh, Aman Trikha",
+        "album": "Khiladi 786",
+        "genre": "Bollywood, Dance",
+        "releaseDate": "2012-12-07",
+        "url": "https://example.com/hookah_bar.mp3",
+        "image": "https://example.com/hookah_bar.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy65",
+        "songname": "Mujhe Ek Pal Chain Na Aaye",
+        "artist": "Alka Yagnik, Kumar Sanu",
+        "album": "Judaai",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "1997-02-28",
+        "url": "https://example.com/mujhe_ek_pal_chain_na_aaye.mp3",
+        "image": "https://example.com/mujhe_ek_pal_chain_na_aaye.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy66",
+        "songname": "Ramam Raghavam",
+        "artist": "Sachet Tandon, Parampara Tandon, Brijesh Shandilya",
+        "album": "Adipurush",
+        "genre": "Bollywood, Devotional",
+        "releaseDate": "2023-06-16",
+        "url": "https://example.com/ramam_raghavam.mp3",
+        "image": "https://example.com/ramam_raghavam.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy67",
+        "songname": "Saat Samundar Paar",
+        "artist": "Sadhana Sargam",
+        "album": "Vishwatma",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "1992-01-24",
+        "url": "https://example.com/saat_samundar_paar.mp3",
+        "image": "https://example.com/saat_samundar_paar.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy68",
+        "songname": "Saathi Mere Sun To Zara",
+        "artist": "Alka Yagnik, Kumar Sanu",
+        "album": "Hum Saath-Saath Hain",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "1999-11-05",
+        "url": "https://example.com/saathi_mere_sun_to_zara.mp3",
+        "image": "https://example.com/saathi_mere_sun_to_zara.jpg",
+        "liked": false,
+        "playCount": 0
+      },
+      {
+        "id": "jhgy69",
+        "songname": "Sandese Aate Hai",
+        "artist": "Sonu Nigam, Roop Kumar Rathod",
+        "album": "Border",
+        "genre": "Bollywood, Soundtrack",
+        "releaseDate": "1997-06-13",
+        "url": "https://example.com/sandese_aate_hai.mp3",
+        "image": "https://example.com/sandese_aate_hai.jpg",
+        "liked": false,
+        "playCount": 0
+      }
+]

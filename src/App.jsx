@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef,useCallback } from 'react'
 import './App.css'
 import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaVolumeMute } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
@@ -17,42 +17,95 @@ function App() {
   const [searchinp, setsearchinp] = useState('');
   const [shuffle, setsuffle] = useState(false)
   const [volume, setvolume] = useState(4);
+  const[tempvol,settempvol]= useState(0);
   const [ismute, setismute] = useState(false)
 
 
   useEffect(() => {
+    if(songlist.length) setspotifysong(songlist[0])
+    
     if (audioRef.current) {
       const audio = audioRef.current;
-
+  
       const handlePlay = () => setIsPlaying(true);
       const handlePause = () => setIsPlaying(false);
-      const handleEnded = () => setIsPlaying(false);
-
+      const handleEnded = () => {
+        setIsPlaying(false);
+        nextsong();
+      };
+      const handleVolumeChange = () => {
+        console.log("Volume changed:", audio.volume);
+        setvolume(audio.volume * 10); 
+      };
+  
+      const keyboard = (e) => {
+        // console.log(e.key); 
+  
+        if (e.key === " ") {  
+          e.preventDefault(); 
+          if (audio.paused) {
+            audio.play();
+          } else {
+            audio.pause();
+          }
+        }
+  
+        if (e.key === "ArrowRight") {
+          audio.currentTime += 20; 
+        }
+  
+        if (e.key === "ArrowLeft") {
+          audio.currentTime -= 20; 
+        }
+        if (e.key === "ArrowUp") {
+          audio.volume = Math.min(audio.volume + 0.1, 1); 
+        }
+      
+        if (e.key === "ArrowDown") {
+          audio.volume = Math.max(audio.volume - 0.1, 0); 
+        }
+      };
+  
       audio.addEventListener("play", handlePlay);
       audio.addEventListener("pause", handlePause);
       audio.addEventListener("ended", handleEnded);
-
+      audio.addEventListener("volumechange", handleVolumeChange);
+      window.addEventListener("keydown", keyboard);
+  
       return () => {
         audio.removeEventListener("play", handlePlay);
         audio.removeEventListener("pause", handlePause);
         audio.removeEventListener("ended", handleEnded);
+        audio.removeEventListener("volumechange", handleVolumeChange);
+        window.removeEventListener("keydown", keyboard);
       };
     }
   }, []);
+  
 
   useEffect(() => {
     if (audioRef.current && spotifysong?.url) {
       audioRef.current.src = spotifysong.url;
       audioRef.current.load(); // Ensure the new song is loaded
       audioRef.current.play().catch((err) => console.log("Autoplay blocked", err));
-      audioRef.current.volume = 0.3;
+      audioRef.current.volume = 0.4;
     }
   }, [spotifysong]);
   useEffect(() => {
+   console.log(searched)
+  }, [searched]);
+
+
+  useEffect(() => {
     if (ismute) {
       audioRef.current.volume = 0;
+      settempvol(volume)
+      setvolume(0)
     } else {
-      audioRef.current.volume = volume / 10;
+      console.log(tempvol)
+      audioRef.current.volume = tempvol / 10;
+      setvolume(tempvol)
+      settempvol(null)
     }
 
   }, [ismute]);
@@ -85,12 +138,11 @@ function App() {
     }
   }, []);
 
-
-
   const handleChange = (e) => {
     audioRef.current.currentTime = e.target.value;
     audioRef.current.play();
   }
+
   const handlevol = (e) => {
     // console.log(e.target.value)
     audioRef.current.volume = e.target.value / 10;
@@ -136,24 +188,56 @@ function App() {
   }
   function debouncing(func, delay) {
     let timer;
-
+  
     return function (...args) {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        func(...args)
+        console.log("Debounced Search Triggered"); // Debugging
+        func(...args);
       }, delay);
-    }
+    };
   }
-  const debouncedsearch = debouncing((keyword) => {
-    const searchedsong = tracks.filter((val) =>
-      val.songname.toLowerCase().includes(keyword)
-    );
-    setsearched(searchedsong)
-  }, 1100)
+  const debouncedsearche = useCallback(
+    debouncing((keyword) => {
+      setsearched(tracks.filter((val) => val.songname.toLowerCase().includes(keyword)));
+    }, 1300), 
+    [tracks] // Dependency to keep `tracks` updated
+  );
+  const debouncedsearch = useCallback(
+    debouncing((keyword) => {
+      const trimmedKeyword = keyword.trim();
+
+      if(trimmedKeyword===""){
+       return setsearched([]);
+      }
+      
+      setsearched(
+        tracks
+          .map((val, ind) => {
+            if (val.songname.toLowerCase().includes(keyword)) {
+              return { ...val, indexe: ind }; 
+            }
+            return null;
+          })
+          .filter(Boolean) 
+      );
+    }, 1300),
+    [tracks] 
+  );
+  
+
   const serchcall = (e) => {
-    setsearchinp(e.target.value)
+    setsearchinp(e.target.value);
     const keyword = e.target.value.toLowerCase();
-    debouncedsearch(keyword)
+    debouncedsearch(keyword);
+  };
+
+  const searchedlistclicked =(e)=>{
+    console.log(e.indexe)
+    setspotifysong(tracks[e.indexe]);
+    setCurrentIndex(e.indexe);
+    setsearched([]);
+    setsearchinp('')
   }
 
   return (
@@ -164,12 +248,7 @@ function App() {
           <input type="text" onChange={serchcall} value={searchinp} placeholder='Search Song...' />
           <ul>
             {searched?.map((val, ind) => {
-              return <li key={ind} onClick={() => {
-                setspotifysong(ind);
-                setCurrentIndex(ind);
-                setsearched([]);
-                setsearchinp('')
-              }}>
+              return <li key={ind} onClick={() => searchedlistclicked(val)}>
                 <img src={val.image} alt="Song Image" />
                 <span>{val.songname}</span>
               </li>
@@ -181,7 +260,7 @@ function App() {
         <div className="tracklist" onClick={eventdelegate}>
           {tracks?.map((val, ind) => {
             return <div key={val.id} className={currentIndex == ind ? "card playing" : 'card'} id={ind} >
-              <div className="playbutton" title='Play Now'> {(currentIndex == ind && isPlaying) ? <FaPause /> : <FaPlay />}   </div>
+              <div className="playbutton" onClick={playpause} title='Play Now'> {(currentIndex == ind && isPlaying) ? <FaPause /> : <FaPlay />}   </div>
               <img src={val.image} alt="" />
               <p>{val.songname}</p>
               <p className='artist'>Artist: {val.artist} </p>
@@ -210,22 +289,23 @@ function App() {
               <div className="end">{duration}</div>
             </div>
             <input
-              type="range"
+              type="range" 
               onChange={handleChange}
               value={Math.floor(audioRef?.current?.currentTime) || 0}
               max={Math.floor(audioRef?.current?.duration) || 100}
               id="progress"
             />
           </div>
-          <div id="controls">
+          <div id="controls" className='main'>
             <span className={shuffle ? 'shuffle active' : 'shuffle'} onClick={() => setsuffle(!shuffle)}><FaShuffle /></span>
             <div className="ico" onClick={prevsong}><FaBackward /> </div>
             <div className="ico playpause" onClick={playpause}>{isPlaying ? <FaPause /> : <FaPlay />} </div>
             <div className="ico" onClick={nextsong}><FaForward /> </div>
-            <span className='vol' onClick={() => setismute(!ismute)}>
-              {ismute ? <FaVolumeMute /> : <FaVolumeLow className='volup' />}
+            <span className='vol'>
+              {ismute ? <FaVolumeMute onClick={() => setismute(!ismute)} /> :
+               <FaVolumeLow className='volup' onClick={() => setismute(!ismute)} />}
               <input
-                type="range"
+                type="range" 
                 value={volume}
                 onChange={handlevol}
                 max={10}
@@ -244,7 +324,7 @@ function App() {
       </div>
       <footer id="mobileplayer" >
         <div className="formobile">
-          <div className="image">
+          <div className={isPlaying ? "image  playing" : "image"}>
             <img src={spotifysong?.image} alt="" />
           </div>
           <header className='header'>
@@ -255,7 +335,7 @@ function App() {
         <div className="mobilecontrols">
           <div className="start">{currentsongtimne}</div>
           <input
-            type="range"
+            type="range" 
             onChange={handleChange}
             value={Math.floor(audioRef?.current?.currentTime) || 0}
             max={Math.floor(audioRef?.current?.duration) || 100}
@@ -272,7 +352,7 @@ function App() {
           <span className='vol' >
             {ismute ? <FaVolumeMute onClick={() => setismute(!ismute)} /> : <FaVolumeLow onClick={() => setismute(!ismute)} className='volup' />}
             <input
-              type="range"
+              type="range" 
               value={volume}
               onChange={handlevol}
               max={10}
