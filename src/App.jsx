@@ -210,7 +210,7 @@ function App() {
       if(trimmedKeyword===""){
        return setsearched([]);
       }
-      
+
       setsearched(
         tracks
           .map((val, ind) => {
@@ -264,6 +264,20 @@ function App() {
               <img src={val.image} alt="" />
               <p>{val.songname}</p>
               <p className='artist'>Artist: {val.artist} </p>
+              <div className="waves">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
             </div>
           })}
         </div>
