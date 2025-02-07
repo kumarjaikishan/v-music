@@ -1,11 +1,9 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef,useCallback } from 'react'
 import './App.css'
 import { FaChevronLeft, FaBackward, FaForward, FaPause, FaPlay, FaVolumeMute } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 import { FaMusic, FaShuffle, FaVolumeLow } from "react-icons/fa6";
 import songlist from './musiclist.json'
-
-let timer;
 
 function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,23 +11,22 @@ function App() {
   const [spotifysong, setspotifysong] = useState({})
   const [currentsongtimne, setcurrentsongtimne] = useState("0:00");
   const audioRef = useRef(null);
-  const playerRef = useRef(null);
   const [searched, setsearched] = useState([])
   const [tracks, settracks] = useState(songlist)
   const [isPlaying, setIsPlaying] = useState(false);
   const [searchinp, setsearchinp] = useState('');
   const [shuffle, setsuffle] = useState(false)
   const [volume, setvolume] = useState(4);
-  const [tempvol, settempvol] = useState(0);
+  const[tempvol,settempvol]= useState(0);
   const [ismute, setismute] = useState(false)
 
 
   useEffect(() => {
-    if (songlist.length) setspotifysong(songlist[0]);
-
+    if(songlist.length) setspotifysong(songlist[0])
+    
     if (audioRef.current) {
       const audio = audioRef.current;
-
+  
       const handlePlay = () => setIsPlaying(true);
       const handlePause = () => setIsPlaying(false);
       const handleEnded = () => {
@@ -38,59 +35,53 @@ function App() {
       };
       const handleVolumeChange = () => {
         console.log("Volume changed:", audio.volume);
-        setvolume(audio.volume * 10);
+        setvolume(audio.volume * 10); 
       };
-
+  
       const keyboard = (e) => {
-        const activeElement = document.activeElement;
-        if (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA") {
-          return;
-        }
-        if (e.key === " ") {
-          e.preventDefault();
+        // console.log(e.key); 
+  
+        if (e.key === " ") {  
+          e.preventDefault(); 
           if (audio.paused) {
             audio.play();
           } else {
             audio.pause();
           }
         }
+  
         if (e.key === "ArrowRight") {
-          audio.currentTime += 20;
+          audio.currentTime += 20; 
         }
+  
         if (e.key === "ArrowLeft") {
-          audio.currentTime -= 20;
+          audio.currentTime -= 20; 
         }
         if (e.key === "ArrowUp") {
-          audio.volume = Math.min(audio.volume + 0.1, 1);
+          audio.volume = Math.min(audio.volume + 0.1, 1); 
         }
+      
         if (e.key === "ArrowDown") {
-          audio.volume = Math.max(audio.volume - 0.1, 0);
+          audio.volume = Math.max(audio.volume - 0.1, 0); 
         }
       };
-
-      // Attach audio event listeners
+  
       audio.addEventListener("play", handlePlay);
       audio.addEventListener("pause", handlePause);
       audio.addEventListener("ended", handleEnded);
       audio.addEventListener("volumechange", handleVolumeChange);
-
-      // Attach keyboard event listener to document instead of playerRef
-      document.addEventListener("keydown", keyboard);
-
-      // Cleanup function
+      window.addEventListener("keydown", keyboard);
+  
       return () => {
         audio.removeEventListener("play", handlePlay);
         audio.removeEventListener("pause", handlePause);
         audio.removeEventListener("ended", handleEnded);
         audio.removeEventListener("volumechange", handleVolumeChange);
-
-        document.removeEventListener("keydown", keyboard);
+        window.removeEventListener("keydown", keyboard);
       };
     }
   }, []);
-
-
-
+  
 
   useEffect(() => {
     if (audioRef.current && spotifysong?.url) {
@@ -101,7 +92,7 @@ function App() {
     }
   }, [spotifysong]);
   useEffect(() => {
-    console.log(searched)
+   console.log(searched)
   }, [searched]);
 
 
@@ -195,46 +186,55 @@ function App() {
       }
     }
   }
-
-
-  function debouncing(keyword, delay) {
-
-    function calee() {
+  function debouncing(func, delay) {
+    let timer;
+  
+    return function (...args) {
       clearTimeout(timer);
       timer = setTimeout(() => {
         console.log("Debounced Search Triggered"); // Debugging
-        if (keyword === "") {
-          return setsearched([]);
-        }
-
-        let hello = tracks.map((val, ind) => {
-          if (val.songname.toLowerCase().includes(keyword)) {
-            return { ...val, indexe: ind };
-          }
-          return null;
-        }).filter(Boolean);
-        if (!hello.length) {
-          hello = [{
-            songname: "No Result Found"
-          }]
-        }
-        console.log(hello)
-        setsearched(hello);
+        func(...args);
       }, delay);
     };
-    calee();
   }
+  
+  // const debouncedsearche = useCallback(
+  //   debouncing((keyword) => {
+  //     setsearched(tracks.filter((val) => val.songname.toLowerCase().includes(keyword)));
+  //   }, 1300), 
+  //   [tracks] 
+  // );
+  const debouncedsearch = useCallback(
+    debouncing((keyword) => {
+      const trimmedKeyword = keyword.trim();
 
+      if(trimmedKeyword===""){
+       return setsearched([]);
+      }
+
+      setsearched(
+        tracks
+          .map((val, ind) => {
+            if (val.songname.toLowerCase().includes(keyword)) {
+              return { ...val, indexe: ind }; 
+            }
+            return null;
+          })
+          .filter(Boolean) 
+      );
+    }, 1300),
+    [tracks] 
+  );
+  
 
   const serchcall = (e) => {
     setsearchinp(e.target.value);
-    const keyword = e.target.value.trim().toLowerCase();
-    debouncing(keyword, 1200);
+    const keyword = e.target.value.toLowerCase();
+    debouncedsearch(keyword);
   };
 
-  const searchedlistclicked = (e) => {
-    if(!e.indexe) return
-    // console.log(e.indexe)
+  const searchedlistclicked =(e)=>{
+    console.log(e.indexe)
     setspotifysong(e);
     setCurrentIndex(e.indexe);
     setsearched([]);
@@ -246,12 +246,12 @@ function App() {
       <div className="navbar">
         <span>  V-Music <FaMusic /> </span>
         <div className="search" >
-          <input type="text" onChange={serchcall} onBlur={()=> !searched[0].indexe && setsearched([])} value={searchinp} placeholder='Search Song...' />
+          <input type="text" onChange={serchcall} value={searchinp} placeholder='Search Song...' />
           <ul>
             {searched?.map((val, ind) => {
               return <li key={ind} onClick={() => searchedlistclicked(val)}>
-                {val.image && <img src={val.image} alt="Song Image" />}
-                <span>{val?.songname}</span>
+                <img src={val.image} alt="Song Image" />
+                <span>{val.songname}</span>
               </li>
             })}
           </ul>
@@ -266,14 +266,14 @@ function App() {
               <p>{val.songname}</p>
               <p className='artist'>Artist: {val.artist} </p>
               <div className="waves">
-                {isPlaying && <>
-                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-                </>}
+              {isPlaying && <>
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </>}
               </div>
             </div>
           })}
         </div>
-        <div id="player" ref={playerRef} >
+        <div id="player" >
           <nav>
             <div className="ico"> <FaChevronLeft /> </div>
             <div className="ico"> <MdMenu /> </div>
@@ -294,7 +294,7 @@ function App() {
               <div className="end">{duration}</div>
             </div>
             <input
-              type="range"
+              type="range" 
               onChange={handleChange}
               value={Math.floor(audioRef?.current?.currentTime) || 0}
               max={Math.floor(audioRef?.current?.duration) || 100}
@@ -308,9 +308,9 @@ function App() {
             <div className="ico" onClick={nextsong}><FaForward /> </div>
             <span className='vol'>
               {ismute ? <FaVolumeMute onClick={() => setismute(!ismute)} /> :
-                <FaVolumeLow className='volup' onClick={() => setismute(!ismute)} />}
+               <FaVolumeLow className='volup' onClick={() => setismute(!ismute)} />}
               <input
-                type="range"
+                type="range" 
                 value={volume}
                 onChange={handlevol}
                 max={10}
@@ -340,7 +340,7 @@ function App() {
         <div className="mobilecontrols">
           <div className="start">{currentsongtimne}</div>
           <input
-            type="range"
+            type="range" 
             onChange={handleChange}
             value={Math.floor(audioRef?.current?.currentTime) || 0}
             max={Math.floor(audioRef?.current?.duration) || 100}
@@ -357,7 +357,7 @@ function App() {
           <span className='vol' >
             {ismute ? <FaVolumeMute onClick={() => setismute(!ismute)} /> : <FaVolumeLow onClick={() => setismute(!ismute)} className='volup' />}
             <input
-              type="range"
+              type="range" 
               value={volume}
               onChange={handlevol}
               max={10}
