@@ -244,7 +244,7 @@ function App() {
   return (
     <>
       <div className="navbar">
-        <span>  V-Music <FaMusic /> </span>
+        <span> <FaMusic /> V-Music  </span>
         <div className="search" >
           <input type="text" onChange={serchcall} onBlur={()=> !searched[0].indexe && setsearched([])} value={searchinp} placeholder='Search Song...' />
           <ul>
@@ -261,7 +261,7 @@ function App() {
         <div className="tracklist" onClick={eventdelegate}>
           {tracks?.map((val, ind) => {
             return <div key={val.id} className={currentIndex == ind ? "card playing" : 'card'} id={ind} >
-              <div className="playbutton" onClick={playpause} title='Play Now'> {(currentIndex == ind && isPlaying) ? <FaPause /> : <FaPlay />}   </div>
+              <div className="playbutton" onClick={playpause} title={(currentIndex == ind && isPlaying) ? 'Pause':'Play Now'}> {(currentIndex == ind && isPlaying) ? <FaPause /> : <FaPlay />}   </div>
               <img src={val.image} alt="" />
               <p>{val.songname}</p>
               <p className='artist'>Artist: {val.artist} </p>
